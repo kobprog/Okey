@@ -18,12 +18,12 @@ uses
 type
   TFormHelp = class(TForm)
     Image1: TImage;
-    Label4: TLabel;
+    LabelGitHub: TLabel;
     ButtonClose: TButton;
     MemoAbout: TMemo;
     ButtonUpdate: TButton;
     procedure ButtonCloseClick(Sender: TObject);
-    procedure Label4Click(Sender: TObject);
+    procedure LabelGitHubClick(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     procedure ButtonUpdateClick(Sender: TObject);
   private
@@ -61,12 +61,12 @@ var
 begin
   if Pos(sDownload, ButtonUpdate.Caption) > 0 then
   begin
-    if SelectDirectory('Выберите папку для загрузки Okey ' + OkeyLastVersionStr,
+    if SelectDirectory('Р’С‹Р±РµСЂРёС‚Рµ РїР°РїРєСѓ РґР»СЏ Р·Р°РіСЂСѓР·РєРё ' + sName +' ' + OkeyLastVersionStr,
       '', DownloadDir) then
     begin
-      ButtonUpdate.Caption := 'Загрузка...';
+      ButtonUpdate.Caption := 'Р—Р°РіСЂСѓР·РєР°...';
       Application.ProcessMessages;
-      OkeyFileName := DownloadDir + '\Okey ' + OkeyLastVersionStr + '.exe';
+      OkeyFileName := DownloadDir + '\' + sName + ' ' + OkeyLastVersionStr + '.exe';
       sAppName := ExtractFileName(Application.ExeName);
       hSession := InternetOpen(PChar(sAppName), INTERNET_OPEN_TYPE_PRECONFIG,
         nil, nil, 0);
@@ -87,7 +87,7 @@ begin
   if (ButtonUpdate.Caption = sCheckUpdate) or (ButtonUpdate.Caption = sError)
   then
   begin
-    ButtonUpdate.Caption := 'Проверка...';
+    ButtonUpdate.Caption := 'РџСЂРѕРІРµСЂРєР°...';
     Application.ProcessMessages;
     Sleep(500);
     sAppName := ExtractFileName(Application.ExeName);
@@ -104,7 +104,7 @@ begin
     begin
       OkeyLastVersion := StrToFloat(OkeyLastVersionStr.Replace('.', ','));
       if OkeyVersion < OkeyLastVersion then
-        ButtonUpdate.Caption := sDownload + OkeyLastVersionStr
+        ButtonUpdate.Caption := sDownload + ' ' + OkeyLastVersionStr
       else
         ButtonUpdate.Caption := sLastVersion;
     end
@@ -119,7 +119,7 @@ begin
   ButtonUpdate.Visible := OkeyVersion > 0;
 end;
 
-procedure TFormHelp.Label4Click(Sender: TObject);
+procedure TFormHelp.LabelGitHubClick(Sender: TObject);
 begin
   ShellExecute(handle, 'open', 'https://github.com/kobprog/Okey.git', nil,
     nil, SW_SHOW);

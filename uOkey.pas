@@ -1,4 +1,4 @@
-﻿unit uOkey;
+unit uOkey;
 
 interface
 
@@ -36,6 +36,8 @@ type
     procedure MemoSecretKeyDblClick(Sender: TObject);
     procedure MemoOutsidePublicKeyDblClick(Sender: TObject);
     procedure MemoPublicKeyDblClick(Sender: TObject);
+    procedure MemoSecretKeyExit(Sender: TObject);
+    procedure MemoOutsidePublicKeyExit(Sender: TObject);
   private
     DiffieHellman: TDiffieHellman;
     function FGIntRandom(BitSize: Word): TFGInt;
@@ -51,15 +53,24 @@ var
   OkeyReadMe: TStringList;
 
 const
-  sVersion = 'Версия ';
+  sName = 'Okey';
+  sVersion = 'Версия';
+  sSlogan = 'Так надёжнее';
   sReadMeURL
     : string = 'https://raw.githubusercontent.com/kobprog/Okey/main/README.md';
-  sExeURL
-    : string = 'https://raw.githubusercontent.com/kobprog/Okey/main/Okey.exe';
+  sExeURL: string =
+    'https://raw.githubusercontent.com/kobprog/Okey/main/Okey.exe';
   sCheckUpdate: string = 'Проверить обновление';
   sLastVersion: string = 'Это крайняя версия';
   sError: string = 'Ошибка! Повторить';
-  sDownload: string = 'Скачать версию ';
+  sDownload: string = 'Скачать версию';
+  sMemoSecretKeyText =
+    'Вставьте сюда ваш секретный ключ или сгенерируйте новый.' + #13#10 +
+    'Никому не сообщайте этот ключ!';
+  sMemoPublicKeyText =
+    'Этот ключ будет рассчитан автоматически при установке секретного ключа. Отправьте этот ключ собеседнику.';
+  sMemoOutsidePublicKeyText =
+    'Запросите у собеседника его публичный ключ, скопируйте и вставьте сюда.';
 
 implementation
 
@@ -83,7 +94,7 @@ end;
 function TFormOkey.FGIntRandom(BitSize: Word): TFGInt;
 var
   PRNG: TPRNGenerator;
-  W: Cardinal;
+  W: LongWord;
   s: string;
   i: Integer;
 begin
@@ -100,13 +111,13 @@ begin
     s := s + DataToBitStr(@W, BitSize mod 32);
   end;
   Base2stringToFGInt(s, Result);
+  FreeAndNil(PRNG);
 end;
 
 procedure TFormOkey.FormCreate(Sender: TObject);
 var
   Rs: TResourceStream;
   s: string;
-  k: Integer;
 begin
   OkeyReadMe := TStringList.Create;
   Rs := TResourceStream.Create(HInstance, 'README', RT_RCDATA);
@@ -121,16 +132,12 @@ begin
     OkeyVersion := StrToFloat(s.Replace('.', ','));
     s := s + ' ';
   end;
-  Caption := 'Okey ' + s + '- Так надёжнее';
+  Caption := sName + ' ' + s + '- ' + sSlogan;
   DiffieHellman := TDiffieHellman.Create;
-  DiffieHellman.SetParamsRFC7919(2048);
-  MemoSecretKey.Text := 'Вставьте существующий ключ или сгенерируйте новый.' +
-    #13#10 + 'Никому не сообщайте этот ключ.';
-  MemoPublicKey.Text :=
-    'Этот ключ будет рассчитан при установке секретного ключа.' + #13#10 +
-    'Делитесь этим ключом с собеседниками.';
-  MemoOutsidePublicKey.Text :=
-    'Запросите у собеседника его публичный ключ, скопируйте и вставьте сюда';
+  DiffieHellman.SetParamsRFC7919;
+  MemoSecretKey.Text := sMemoSecretKeyText;
+  MemoPublicKey.Text := sMemoPublicKeyText;
+  MemoOutsidePublicKey.Text := sMemoOutsidePublicKeyText;
   MemoCommonSecretKey.Text := '...';
 end;
 
@@ -185,6 +192,12 @@ begin
   MemoOutsidePublicKey.SelectAll;
 end;
 
+procedure TFormOkey.MemoOutsidePublicKeyExit(Sender: TObject);
+begin
+  if MemoOutsidePublicKey.Text = '' then
+    MemoOutsidePublicKey.Text := sMemoOutsidePublicKeyText;
+end;
+
 procedure TFormOkey.MemoPublicKeyChange(Sender: TObject);
 begin
   MemoOutsidePublicKeyChange(Self);
@@ -199,7 +212,6 @@ procedure TFormOkey.MemoSecretKeyChange(Sender: TObject);
 var
   s: string;
   i: Integer;
-  s2: string;
   Correct: Boolean;
 begin
   if (Length(MemoSecretKey.Text) = 128) then
@@ -216,14 +228,18 @@ begin
     end;
   end
   else
-    MemoPublicKey.Text :=
-      'Этот ключ будет рассчитан при установке секретного ключа.' + #13#10 +
-      'Делитесь этим ключом с собеседниками.';
+    MemoPublicKey.Text := sMemoPublicKeyText;
 end;
 
 procedure TFormOkey.MemoSecretKeyDblClick(Sender: TObject);
 begin
   MemoSecretKey.SelectAll;
+end;
+
+procedure TFormOkey.MemoSecretKeyExit(Sender: TObject);
+begin
+  if MemoSecretKey.Text = '' then
+    MemoSecretKey.Text := sMemoSecretKeyText;
 end;
 
 end.

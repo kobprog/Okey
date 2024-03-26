@@ -3,8 +3,8 @@ object FormHelp: TFormHelp
   Top = 0
   BorderStyle = bsDialog
   Caption = 'FormHelp'
-  ClientHeight = 593
-  ClientWidth = 531
+  ClientHeight = 475
+  ClientWidth = 461
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
@@ -14,14 +14,14 @@ object FormHelp: TFormHelp
   Position = poDesktopCenter
   OnCreate = FormCreate
   DesignSize = (
-    531
-    593)
+    461
+    475)
   TextHeight = 15
   object Image1: TImage
-    Left = 48
-    Top = 24
-    Width = 442
-    Height = 221
+    Left = 24
+    Top = 17
+    Width = 413
+    Height = 210
     Anchors = [akLeft, akTop, akRight]
     Center = True
     Picture.Data = {
@@ -7245,11 +7245,10 @@ object FormHelp: TFormHelp
       6F868E92AC219E0805C48671C4635287D599F718961D1B9FE857C2174EBA2840
       B23428417F31F008BD286E358B27D3F07FFFD9}
     Proportional = True
-    ExplicitWidth = 441
   end
-  object Label4: TLabel
-    Left = 48
-    Top = 511
+  object LabelGitHub: TLabel
+    Left = 24
+    Top = 395
     Width = 217
     Height = 15
     Cursor = crHandPoint
@@ -7262,12 +7261,12 @@ object FormHelp: TFormHelp
     Font.Style = []
     ParentFont = False
     WordWrap = True
-    OnClick = Label4Click
-    ExplicitTop = 468
+    OnClick = LabelGitHubClick
+    ExplicitTop = 396
   end
   object ButtonClose: TButton
-    Left = 415
-    Top = 539
+    Left = 362
+    Top = 422
     Width = 75
     Height = 25
     Anchors = [akRight, akBottom]
@@ -7280,12 +7279,14 @@ object FormHelp: TFormHelp
     ParentFont = False
     TabOrder = 0
     OnClick = ButtonCloseClick
+    ExplicitLeft = 356
+    ExplicitTop = 416
   end
   object MemoAbout: TMemo
-    Left = 48
-    Top = 269
-    Width = 442
-    Height = 227
+    Left = 24
+    Top = 239
+    Width = 413
+    Height = 145
     Anchors = [akLeft, akTop, akRight, akBottom]
     BevelInner = bvNone
     BevelKind = bkTile
@@ -7302,18 +7303,18 @@ object FormHelp: TFormHelp
     ReadOnly = True
     ScrollBars = ssVertical
     TabOrder = 1
-    ExplicitWidth = 447
-    ExplicitHeight = 173
+    ExplicitWidth = 407
+    ExplicitHeight = 146
   end
   object ButtonUpdate: TButton
-    Left = 48
-    Top = 539
+    Left = 24
+    Top = 422
     Width = 153
     Height = 25
     Anchors = [akLeft, akBottom]
     Caption = #1055#1088#1086#1074#1077#1088#1080#1090#1100' '#1086#1073#1085#1086#1074#1083#1077#1085#1080#1077
     TabOrder = 2
     OnClick = ButtonUpdateClick
-    ExplicitTop = 485
+    ExplicitTop = 416
   end
 end

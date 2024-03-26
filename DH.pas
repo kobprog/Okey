@@ -1,4 +1,4 @@
-﻿{
+{
   Модуль реализует генератор псевдослучайных чисел на основе MRG32k3a (L’Ecuyer)
   и протокол Диффи-Хеллмана-Меркла - криптографический протокол,
   позволяющий двум и более сторонам получить общий секретный ключ, используя
@@ -212,6 +212,7 @@ begin
   Base2stringToFGInt(HexToBitStr(HexOutsidePublic), FOutsidePublicKey);
   FGIntModExp(FOutsidePublicKey, FSecretKey, FPrime, FCommonSecretKey);
   FGIntToBase2string(FCommonSecretKey, s);
+  FGIntToBase2string(FCommonSecretKey, s);
   Hash512 := THashSHA2.Create(SHA256);
   Hash512.Reset;
   Hash512.Update(s);
@@ -229,15 +230,11 @@ begin
 end;
 
 procedure TDiffieHellman.SetParams(HexPrime, HexGenerator: string);
-var
-  s: string;
 begin
   Base2stringToFGInt(HexToBitStr(HexPrime), FPrime);
   Base2stringToFGInt(HexToBitStr(HexGenerator), FGenerator);
-  FGIntToBase2string(FPrime, s);
-  FHexPrime := BitStrToHex(s);
-  FGIntToBase2string(FGenerator, s);
-  FHexGenerator := BitStrToHex(s);
+  FHexPrime := HexPrime;
+  FHexGenerator := HexGenerator;
 end;
 
 procedure TDiffieHellman.SetParamsRFC3526(pLen: Word = 2048);
@@ -460,8 +457,7 @@ var
 begin
   Base2stringToFGInt(HexToBitStr(HexSecret), FSecretKey);
   FGIntModExp(FGenerator, FSecretKey, FPrime, FPublicKey);
-  FGIntToBase2string(FSecretKey, s);
-  FHexSecretKey := BitStrToHex(s);
+  FHexSecretKey := HexSecret;
   FGIntToBase2string(FPublicKey, s);
   FHexPublicKey := BitStrToHex(s);
 end;
